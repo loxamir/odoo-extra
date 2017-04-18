@@ -63,9 +63,9 @@ class pos_cache(models.Model):
         return [('sale_ok', '=', True), ('available_in_pos', '=', True)]
 
     def _get_fields(self):
-        return ['display_name', 'list_price','price','pos_categ_id', 'taxes_id', 'ean13', 'default_code', 
+        return ['display_name', 'list_price','price','pos_categ_id', 'taxes_id', 'ean13', 'default_code',
                  'to_weight', 'uom_id', 'uos_id', 'uos_coeff', 'mes_type', 'description_sale', 'description',
-                 'product_tmpl_id']
+                 'product_tmpl_id', 'standard_price']
 
 
 class pos_config(models.Model):
