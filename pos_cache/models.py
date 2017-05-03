@@ -36,7 +36,7 @@ class pos_cache(models.Model):
         if caches:
             caches.unlink()
         self.env['pos.config'].search([('state', '=', 'active')]).recomputeCache()
-            
+
     @api.one
     def refresh_cache(self):
         products = self.env['product.product'].search(self._get_domain())
@@ -58,14 +58,14 @@ class pos_cache(models.Model):
                 retries+=1
                 if retries>5:
                     raise Exception(e)
-        
+
     def _get_domain(self):
         return [('sale_ok', '=', True), ('available_in_pos', '=', True)]
 
     def _get_fields(self):
         return ['display_name', 'list_price','price','pos_categ_id', 'taxes_id', 'ean13', 'default_code',
                  'to_weight', 'uom_id', 'uos_id', 'uos_coeff', 'mes_type', 'description_sale', 'description',
-                 'product_tmpl_id', 'standard_price']
+                 'product_tmpl_id', 'standard_price', 'categ_id']
 
 
 class pos_config(models.Model):
@@ -75,7 +75,7 @@ class pos_config(models.Model):
     cache_id = fields.Many2one('pos.cache', 'Cache')
     cachecomputeuser_id = fields.Many2one('res.users', 'Cache compute user', help="User used to compute the cache content and thus avoid the bad practice of using admin in multi-company")
     cachetime = fields.Datetime(related='cache_id.cachetime', string='Last cache compute')
-    
+
     @api.multi
     def getProductsFromCache(self):
         if not self.cache_id or not self.cache_id.cachetime:
@@ -87,4 +87,3 @@ class pos_config(models.Model):
         if not self.cache_id:
             self.cache_id = self.cache_id.create({})
         self.cache_id.refresh_cache()
-        
