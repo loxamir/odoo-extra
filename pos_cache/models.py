@@ -40,7 +40,7 @@ class pos_cache(models.Model):
     @api.one
     def refresh_cache(self):
         products = self.env['product.product'].search(self._get_domain())
-        prod_ctx = products.with_context(pricelist=self.config_ids[0].pricelist_id.id, display_default_code=False)
+        prod_ctx = products.with_context()
         if self.config_ids[0].cachecomputeuser_id:
             prod_ctx = prod_ctx.sudo(self.config_ids[0].cachecomputeuser_id.id)
         res = prod_ctx.read(self._get_fields())
